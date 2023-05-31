@@ -5,15 +5,15 @@ const regd_users = express.Router();
 
 let users = [];
 
-const isValid = (username)=>{ 
-    const userMaches = users.filter((user)=> user.username=== username);
-    return userMaches.lenght > 0;
-}
+const isValid = (username) => { 
+    const existingUser = users.find((user) => user.username.toLowerCase() === username.toLowerCase());
+    return !existingUser; // Return true if the username does not exist
+  }
 
-const authenticatedUser = (username,password)=>{ 
-const matchingUsers = users.filter((user)=>user.username === username && user.password === password);
-return matchingUsers.lenght > 0;
-}
+const authenticatedUser = (username, password) => {
+    const matchingUser = users.find((user) => user.username === username && user.password === password);
+    return !!matchingUser;
+  };
 
 //only registered users can login
 regd_users.post("/login", (req,res) => {
